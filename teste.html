@@ -158,9 +158,8 @@ body{font-family:'Inter',sans-serif;background-color:#000;min-height:100vh;margi
     <!-- Header -->
     <header class="flex items-center justify-between px-8 h-14 bg-[#131316] text-[#b9aeff] font-['Inter'] font-medium text-xs tracking-widest shrink-0 top-header">
       <div class="flex items-center space-x-4">
-        <!-- Mobile: logo -->
-        <span class="text-white font-semibold text-lg tracking-[-0.04em] md:hidden mr-1">JOKER</span>
-        <span class="text-on-surface/40 font-bold tracking-tighter text-lg hidden md:block" id="top-title">AIMBOT</span>
+        <span class="block md:hidden text-white font-semibold text-lg tracking-[-0.04em] mr-1">JOKER</span>
+        <span class="hidden md:block text-on-surface/40 font-bold tracking-tighter text-lg" id="top-title">AIMBOT</span>
         <!-- Desktop sub nav -->
         <div class="sub-nav-btn-wrap flex space-x-6 h-14 invisible items-center md:visible">
           <a class="sub-nav-btn cursor-pointer transition-opacity" data-sub="options">OPTIONS</a>
@@ -169,7 +168,7 @@ body{font-family:'Inter',sans-serif;background-color:#000;min-height:100vh;margi
       </div>
       <div class="flex items-center space-x-3">
         <!-- Mobile title pill -->
-        <span class="text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded-full md:hidden" id="top-title-mobile">AIMBOT</span>
+        <span class="block md:hidden text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded-full" id="top-title-mobile">AIMBOT</span>
         <span class="material-symbols-outlined opacity-50 hover:opacity-100 cursor-pointer transition-opacity">notifications</span>
         <span class="material-symbols-outlined opacity-50 hover:opacity-100 cursor-pointer transition-opacity text-error">power_settings_new</span>
       </div>
@@ -384,11 +383,61 @@ body{font-family:'Inter',sans-serif;background-color:#000;min-height:100vh;margi
             <div class="col-span-12 md:col-span-7 space-y-3 md:space-y-4">
               <section class="bg-surface-container-high rounded-lg p-4 md:p-5 border border-outline-variant/5">
                 <h3 class="font-['Inter'] text-[10px] font-bold uppercase tracking-widest text-outline mb-3 md:mb-4">ACCOUNT STATUS</h3>
-                <div class="grid grid-cols-2 gap-3 md:gap-4">
-                  <div class="bg-surface-container-lowest/50 p-3 rounded border border-outline-variant/5"><p class="text-[9px] uppercase tracking-tighter text-outline-variant font-bold mb-1">User Identity</p><p class="text-xs font-semibold text-on-surface flex items-center gap-2">nash <span class="text-[9px] px-1.5 py-0.5 bg-primary/10 text-primary rounded">85HZ</span></p></div>
-                  <div class="bg-surface-container-lowest/50 p-3 rounded border border-outline-variant/5"><p class="text-[9px] uppercase tracking-tighter text-outline-variant font-bold mb-1">Subscription</p><p class="text-xs font-semibold text-tertiary">Lifetime</p></div>
-                  <div class="col-span-2 bg-surface-container-lowest/50 p-3 rounded border border-outline-variant/5 flex justify-between items-center"><div><p class="text-[9px] uppercase tracking-tighter text-outline-variant font-bold mb-1">Build Version</p><p class="text-xs font-mono text-on-surface">2.0.0 Stable</p></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-primary"></span><span class="text-[10px] font-bold text-primary">SECURE</span></div></div>
-                </div>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+
+                    <!-- User -->
+                    <div class="bg-surface-container-lowest/50 p-3 rounded border border-outline-variant/5">
+                      <p class="text-[9px] uppercase tracking-tighter text-outline-variant font-bold mb-1">
+                        User Identity
+                      </p>
+
+                      <div class="flex items-center justify-between gap-2">
+                        <p class="text-xs font-semibold text-on-surface truncate">
+                          nash
+                        </p>
+
+                        <span class="text-[9px] px-1.5 py-0.5 bg-primary/10 text-primary rounded shrink-0">
+                          85HZ
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Subscription -->
+                    <div class="bg-surface-container-lowest/50 p-3 rounded border border-outline-variant/5">
+                      <p class="text-[9px] uppercase tracking-tighter text-outline-variant font-bold mb-1">
+                        Subscription
+                      </p>
+
+                      <p class="text-xs font-semibold text-tertiary">
+                        Lifetime
+                      </p>
+                    </div>
+
+                    <!-- Build -->
+                    <div class="col-span-1 sm:col-span-2 bg-surface-container-lowest/50 p-3 rounded border border-outline-variant/5">
+                      
+                      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                        
+                        <div>
+                          <p class="text-[9px] uppercase tracking-tighter text-outline-variant font-bold mb-1">
+                            Build Version
+                          </p>
+                          <p class="text-xs font-mono text-on-surface">
+                            2.0.0 Stable
+                          </p>
+                        </div>
+
+                        <div class="flex items-center gap-1.5">
+                          <span class="w-2 h-2 rounded-full bg-primary"></span>
+                          <span class="text-[10px] font-bold text-primary">
+                            SECURE
+                          </span>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
               </section>
               <section class="bg-surface-container-high rounded-lg p-4 md:p-5 border border-outline-variant/5">
                 <div class="flex items-center justify-between"><div><h3 class="font-['Inter'] text-[10px] font-bold uppercase tracking-widest text-on-surface">KEYBIND MENU</h3><p class="text-[10px] text-on-surface-variant/60 font-medium">Toggle software visibility in-game</p></div><div class="px-3 py-1.5 bg-surface-container-highest rounded border border-outline-variant/20 cursor-pointer"><span class="text-[10px] font-bold text-primary">INSERT</span></div></div>
