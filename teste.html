@@ -90,9 +90,6 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
       <div class="nav-item flex items-center px-6 py-3 space-x-3 font-['Inter'] tracking-tight uppercase font-semibold text-[11px] cursor-pointer transition-all duration-200" data-tab="visuals"><span class="material-symbols-outlined">visibility</span><span>VISUALS</span></div>
       <div class="nav-item flex items-center px-6 py-3 space-x-3 font-['Inter'] tracking-tight uppercase font-semibold text-[11px] cursor-pointer transition-all duration-200" data-tab="configs"><span class="material-symbols-outlined">settings_input_component</span><span>CONFIGS</span></div>
     </nav>
-    <div class="px-4 mt-auto">
-      <button class="w-full py-2.5 rounded-lg bg-gradient-to-br from-[#483D8B] to-[#463b89] text-on-surface text-[11px] font-bold tracking-widest uppercase shadow-lg active:scale-95 transition-transform">INJECT</button>
-    </div>
   </aside>
 
   <!-- MAIN -->
@@ -122,15 +119,15 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
               <div class="grid grid-cols-2 gap-4">
                 <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5 hover:bg-surface-container-high transition-colors">
                   <div><span class="text-on-surface text-sm font-medium block">Automatic Aimbot</span><span class="text-on-surface-variant text-[10px]">Locks onto targets automatically</span></div>
-                  <label class="switch"><input type="checkbox" checked onchange="enviarComando(this.checked ? 'aimbot_on' : 'aimbot_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
+                  <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'aimbot_on' : 'aimbot_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
                 </div>
                 <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5 hover:bg-surface-container-high transition-colors">
                   <div><span class="text-on-surface text-sm font-medium block">Ignore Knocked</span><span class="text-on-surface-variant text-[10px]">Filter out downed enemies</span></div>
-                  <label class="switch"><input type="checkbox" checked onchange="enviarComando(this.checked ? 'ignoreknocked_on' : 'ignoreknocked_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
+                  <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'ignoreknocked_on' : 'ignoreknocked_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
                 </div>
                 <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5 hover:bg-surface-container-high transition-colors">
                   <div><span class="text-on-surface text-sm font-medium block">Ignore Bots</span><span class="text-on-surface-variant text-[10px]">Avoid targeting AI entities</span></div>
-                  <label class="switch"><input type="checkbox" checked onchange="enviarComando(this.checked ? 'ignorebots_on' : 'ignorebots_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
+                  <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'ignorebots_on' : 'ignorebots_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
                 </div>
                 <!-- Field of View slider -->
                 <div class="bg-surface-container-low p-4 rounded-xl flex flex-col border border-white/5 hover:bg-surface-container-high transition-colors">
@@ -157,21 +154,32 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
             <div class="bg-surface-container-low p-4 rounded-xl border border-white/5">
               <div class="jk-slider-wrap">
                 <div class="jk-slider-row"><span class="text-on-surface text-sm font-medium">Smoothness</span><span class="text-primary text-[11px] font-bold" id="smooth-label">5</span></div>
-                <input type="range" class="jk-slider" min="1" max="10" value="5" id="smooth-slider">
-                <div class="jk-slider-ticks"><span class="text-[9px] text-outline">1</span><span class="text-[9px] text-outline">10</span></div>
+                <input type="range" class="jk-slider" min="1" max="500" value="5" id="smooth-slider" oninput="atualizarTextoFov(this.value)" onchange="enviarFov(this.value)">
+                <div class="jk-slider-ticks"><span class="text-[9px] text-outline">1</span><span class="text-[9px] text-outline">500</span></div>
               </div>
             </div>
-            <div class="bg-surface-container-low p-4 rounded-xl border border-white/5">
-              <div class="jk-slider-wrap">
-                <div class="jk-slider-row"><span class="text-on-surface text-sm font-medium">Speed</span><span class="text-primary text-[11px] font-bold" id="speed-label">7</span></div>
-                <input type="range" class="jk-slider" min="1" max="10" value="7" id="speed-slider">
-                <div class="jk-slider-ticks"><span class="text-[9px] text-outline">1</span><span class="text-[9px] text-outline">10</span></div>
-              </div>
+          <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5">
+            <div>
+              <span class="text-on-surface text-sm font-medium block">No Recoil</span>
+              <span class="text-on-surface-variant text-[10px]">Removes weapon recoil</span>
             </div>
-            <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5">
-              <div><span class="text-on-surface text-sm font-medium block">Humanization</span><span class="text-on-surface-variant text-[10px]">Randomize movement pattern</span></div>
-              <label class="switch"><input type="checkbox" checked><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
+            <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'norecoil_on' : 'norecoil_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
+          </div>
+
+          <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5">
+            <div>
+              <span class="text-on-surface text-sm font-medium block">Weapon Attribute</span>
+              <span class="text-on-surface-variant text-[10px]">Increases fire rate</span>
             </div>
+            <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'weaponatribute_on' : 'weaponatribute_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
+          </div>
+
+          <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5">
+            <div>
+              <span class="text-on-surface text-sm font-medium block">Show FOV</span>
+              <span class="text-on-surface-variant text-[10px]">Displays field of view</span>
+            </div>
+            <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'showfov_on' : 'showfov_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
           </div>
         </div>
       </div>
