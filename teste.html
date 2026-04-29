@@ -2,7 +2,7 @@
 <html class="dark" lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -14,26 +14,19 @@ tailwind.config = {
 function enviarComando(comando) {
     fetch('/api/' + comando)
         .then(resposta => resposta.text())
-        .then(texto => {
-            //console.log("C++ Respondeu:", texto);
-            //alert("Resposta do Cheat: " + texto);
-        })
         .catch(erro => console.error("Erro:", erro));
 }
-
 function atualizarTextoFov(valor) {
   document.getElementById('fov-label').innerText = valor + '°';
 }
-
 function enviarFov(valor, comando) {
   fetch('/api/' + comando +'?v=' + valor)
-      .then(resposta => console.log("FOV Atualizado para", valor))
       .catch(erro => console.error("Erro:", erro));
 }
 </script>
 <style>
 .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;font-size:18px;}
-body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;}
+body{font-family:'Inter',sans-serif;background-color:#000;min-height:100vh;margin:0;}
 .custom-scrollbar::-webkit-scrollbar{width:4px;}
 .custom-scrollbar::-webkit-scrollbar-track{background:#0e0e11;}
 .custom-scrollbar::-webkit-scrollbar-thumb{background:#2a2a2d;border-radius:10px;}
@@ -53,17 +46,17 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
 .switch-sm .thumb{width:12px;height:12px;top:2px;left:2px;}
 .switch-sm input:checked~.thumb{transform:translateX(16px);}
 
-/* Slider unificado estilo Field of View */
+/* Slider */
 .jk-slider-wrap{display:flex;flex-direction:column;gap:6px;}
 .jk-slider-row{display:flex;align-items:center;justify-content:space-between;}
 .jk-slider{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:999px;background:#353438;outline:none;cursor:pointer;position:relative;}
-.jk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:999px;background:#c8bfff;cursor:pointer;border:2px solid #131316;box-shadow:0 0 6px #483d8b88;transition:transform .15s;}
-.jk-slider::-moz-range-thumb{width:14px;height:14px;border-radius:999px;background:#c8bfff;cursor:pointer;border:2px solid #131316;box-shadow:0 0 6px #483d8b88;}
+.jk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:999px;background:#c8bfff;cursor:pointer;border:2px solid #131316;box-shadow:0 0 6px #483d8b88;transition:transform .15s;}
+.jk-slider::-moz-range-thumb{width:18px;height:18px;border-radius:999px;background:#c8bfff;cursor:pointer;border:2px solid #131316;box-shadow:0 0 6px #483d8b88;}
 .jk-slider::-webkit-slider-thumb:hover{transform:scale(1.25);}
 .jk-slider-ticks{display:flex;justify-content:space-between;}
 
 /* Color picker popup */
-.color-popup{position:absolute;z-index:50;background:#1b1b1e;border:1px solid #484551;border-radius:12px;padding:14px;width:220px;box-shadow:0 8px 32px #00000088;display:none;flex-direction:column;gap:10px;}
+.color-popup{position:fixed;z-index:9999;background:#1b1b1e;border:1px solid #484551;border-radius:12px;padding:14px;width:220px;box-shadow:0 8px 32px #00000088;display:none;flex-direction:column;gap:10px;}
 .color-popup.open{display:flex;}
 .color-popup input[type=color]{-webkit-appearance:none;appearance:none;width:100%;height:32px;border:none;border-radius:8px;cursor:pointer;background:none;padding:0;}
 .color-popup input[type=color]::-webkit-color-swatch-wrapper{padding:0;border-radius:8px;}
@@ -73,13 +66,81 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
 .preset-dot:hover{transform:scale(1.2);border-color:#c8bfff66;}
 .hex-input{background:#0e0e11;border:1px solid #484551;border-radius:6px;color:#e4e1e6;font-size:11px;font-family:monospace;padding:4px 8px;width:100%;outline:none;}
 .hex-input:focus{border-color:#c8bfff66;}
+
+/* Mobile bottom nav */
+.bottom-nav{display:none;}
+@media(max-width:768px){
+  .bottom-nav{display:flex;}
+  .desktop-sidebar{display:none;}
+  .app-wrapper{flex-direction:column;width:100%;min-height:100vh;height:auto;border-radius:0;border:none;}
+  .main-content{flex:1;min-height:0;}
+  .main-scroll{padding:16px!important;padding-bottom:80px!important;}
+  .grid-cols-2{grid-template-columns:1fr!important;}
+  .col-span-7{grid-column:span 12!important;}
+  .col-span-5{grid-column:span 12!important;}
+  .col-span-12{grid-column:span 12!important;}
+  .top-header{padding-left:16px!important;padding-right:16px!important;}
+}
+
+/* Desktop layout */
+@media(min-width:769px){
+  body{display:flex;align-items:center;justify-content:center;}
+  .app-wrapper{width:720px;height:500px;}
+  .bottom-nav{display:none!important;}
+  .main-scroll{overflow-y:auto;}
+}
+
+/* Bottom nav styles */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  height:60px;
+  background:#0e0e11;
+  border-top:1px solid rgba(255,255,255,0.05);
+  z-index:100;
+  align-items:stretch;
+}
+.bottom-nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  cursor:pointer;transition:all .2s;
+  border-top:2px solid transparent;
+  padding:4px 0;
+}
+.bottom-nav-item.active{border-top-color:#483d8b;background:linear-gradient(to bottom,rgba(72,61,139,0.15),transparent);}
+.bottom-nav-item .nav-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#928f9c;transition:color .2s;}
+.bottom-nav-item.active .nav-label{color:#c8bfff;}
+.bottom-nav-item .material-symbols-outlined{font-size:20px;color:#928f9c;transition:color .2s;}
+.bottom-nav-item.active .material-symbols-outlined{color:#c8bfff;}
+
+/* Sub nav pills for mobile */
+@media(max-width:768px){
+  .sub-nav-pills{display:flex;gap:8px;margin-bottom:16px;}
+  .sub-nav-pill{
+    padding:6px 16px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    background:#1b1b1e;border:1px solid #484551;color:#928f9c;cursor:pointer;transition:all .2s;
+  }
+  .sub-nav-pill.active{background:#483d8b;border-color:#c8bfff40;color:#fff;box-shadow:0 0 10px #483d8b66;}
+  .sub-nav-btn-wrap{display:none;}
+}
+@media(min-width:769px){
+  .sub-nav-pills{display:none;}
+  .sub-nav-btn-wrap{display:flex;}
+}
+
+/* Touch-friendly sizes on mobile */
+@media(max-width:768px){
+  .switch{width:48px;height:26px;}
+  .switch .thumb{width:18px;height:18px;top:3px;left:3px;}
+  .switch input:checked~.thumb{transform:translateX(22px);}
+}
 </style>
 </head>
 <body class="bg-black">
-<div class="relative w-[720px] h-[500px] bg-surface flex overflow-hidden rounded-lg shadow-2xl shadow-black/50 border border-outline-variant/10">
 
-  <!-- SIDEBAR -->
-  <aside class="w-[175px] h-full py-6 flex flex-col bg-[#0e0e11] shadow-[1px_0_0_0_rgba(255,255,255,0.03)] z-10 shrink-0">
+<!-- Main wrapper -->
+<div class="relative bg-surface flex overflow-hidden rounded-lg shadow-2xl shadow-black/50 border border-outline-variant/10 app-wrapper" style="flex-direction:row;">
+
+  <!-- SIDEBAR (desktop only) -->
+  <aside class="w-[175px] h-full py-6 flex flex-col bg-[#0e0e11] shadow-[1px_0_0_0_rgba(255,255,255,0.03)] z-10 shrink-0 desktop-sidebar">
     <div class="px-6 mb-8">
       <h1 class="text-2xl font-semibold tracking-[-0.04em] text-white">JOKER</h1>
       <p class="font-['Inter'] tracking-tight uppercase font-semibold text-[10px] text-primary opacity-80">V2.0.4 ACTIVE</p>
@@ -93,30 +154,42 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
   </aside>
 
   <!-- MAIN -->
-  <main class="flex-1 flex flex-col bg-surface relative overflow-hidden">
-    <header class="flex items-center justify-between px-8 h-14 bg-[#131316] text-[#b9aeff] font-['Inter'] font-medium text-xs tracking-widest shrink-0">
-      <div class="flex items-center space-x-6">
-        <span class="text-on-surface/40 font-bold tracking-tighter text-lg mr-2" id="top-title">AIMBOT</span>
-        <div class="flex space-x-6 h-14 items-center">
+  <main class="flex-1 flex flex-col bg-surface relative overflow-hidden main-content" style="min-width:0;">
+    <!-- Header -->
+    <header class="flex items-center justify-between px-8 h-14 bg-[#131316] text-[#b9aeff] font-['Inter'] font-medium text-xs tracking-widest shrink-0 top-header">
+      <div class="flex items-center space-x-4">
+        <!-- Mobile: logo -->
+        <span class="text-white font-semibold text-lg tracking-[-0.04em] md:hidden mr-1">JOKER</span>
+        <span class="text-on-surface/40 font-bold tracking-tighter text-lg hidden md:block" id="top-title">AIMBOT</span>
+        <!-- Desktop sub nav -->
+        <div class="sub-nav-btn-wrap flex space-x-6 h-14 items-center">
           <a class="sub-nav-btn cursor-pointer transition-opacity" data-sub="options">OPTIONS</a>
           <a class="sub-nav-btn cursor-pointer transition-opacity opacity-50 hover:opacity-100" data-sub="settings">SETTINGS</a>
         </div>
       </div>
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-3">
+        <!-- Mobile title pill -->
+        <span class="text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded-full md:hidden" id="top-title-mobile">AIMBOT</span>
         <span class="material-symbols-outlined opacity-50 hover:opacity-100 cursor-pointer transition-opacity">notifications</span>
         <span class="material-symbols-outlined opacity-50 hover:opacity-100 cursor-pointer transition-opacity text-error">power_settings_new</span>
       </div>
     </header>
 
-    <div class="flex-1 overflow-y-auto custom-scrollbar p-8">
+    <!-- Scrollable content -->
+    <div class="flex-1 overflow-y-auto custom-scrollbar p-8 main-scroll">
 
       <!-- ===== AIMBOT ===== -->
       <div class="tab-content active" id="tab-aimbot">
+        <!-- Mobile sub nav pills -->
+        <div class="sub-nav-pills">
+          <div class="sub-nav-pill active" data-sub="options">OPTIONS</div>
+          <div class="sub-nav-pill" data-sub="settings">SETTINGS</div>
+        </div>
         <div class="sub-tab active" id="sub-aimbot-options">
-          <div class="grid grid-cols-12 gap-6">
+          <div class="grid grid-cols-12 gap-4 md:gap-6">
             <div class="col-span-12">
               <h2 class="text-[10px] uppercase tracking-[0.2em] text-outline font-bold mb-4 opacity-70">General Automation</h2>
-              <div class="grid grid-cols-2 gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                 <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5 hover:bg-surface-container-high transition-colors">
                   <div><span class="text-on-surface text-sm font-medium block">Automatic Aimbot</span><span class="text-on-surface-variant text-[10px]">Locks onto targets automatically</span></div>
                   <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'aimbot_on' : 'aimbot_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
@@ -129,7 +202,6 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
                   <div><span class="text-on-surface text-sm font-medium block">Ignore Bots</span><span class="text-on-surface-variant text-[10px]">Avoid targeting AI entities</span></div>
                   <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'ignorebots_on' : 'ignorebots_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
                 </div>
-                <!-- Field of View slider -->
                 <div class="bg-surface-container-low p-4 rounded-xl flex flex-col border border-white/5 hover:bg-surface-container-high transition-colors">
                   <div class="jk-slider-wrap">
                     <div class="jk-slider-row"><span class="text-on-surface text-sm font-medium">Field of View</span><span class="text-primary text-[11px] font-bold" id="fov-label">120°</span></div>
@@ -140,10 +212,10 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
               </div>
             </div>
             <div class="col-span-12 mt-2">
-              <div class="grid grid-cols-3 gap-4">
-                <div class="bg-surface-container-lowest p-4 rounded-xl border border-white/5 flex flex-col items-center justify-center space-y-1"><span class="text-primary-container font-bold text-lg">14ms</span><span class="text-[9px] text-outline uppercase tracking-wider">LATENCY</span></div>
-                <div class="bg-surface-container-lowest p-4 rounded-xl border border-white/5 flex flex-col items-center justify-center space-y-1"><span class="text-green-500 font-bold text-lg">SECURE</span><span class="text-[9px] text-outline uppercase tracking-wider">STATUS</span></div>
-                <div class="bg-surface-container-lowest p-4 rounded-xl border border-white/5 flex flex-col items-center justify-center space-y-1"><span class="text-on-surface font-bold text-lg">HWID</span><span class="text-[9px] text-outline uppercase tracking-wider">VERIFIED</span></div>
+              <div class="grid grid-cols-3 gap-3 md:gap-4">
+                <div class="bg-surface-container-lowest p-3 md:p-4 rounded-xl border border-white/5 flex flex-col items-center justify-center space-y-1"><span class="text-primary-container font-bold text-base md:text-lg">14ms</span><span class="text-[9px] text-outline uppercase tracking-wider">LATENCY</span></div>
+                <div class="bg-surface-container-lowest p-3 md:p-4 rounded-xl border border-white/5 flex flex-col items-center justify-center space-y-1"><span class="text-green-500 font-bold text-base md:text-lg">SECURE</span><span class="text-[9px] text-outline uppercase tracking-wider">STATUS</span></div>
+                <div class="bg-surface-container-lowest p-3 md:p-4 rounded-xl border border-white/5 flex flex-col items-center justify-center space-y-1"><span class="text-on-surface font-bold text-base md:text-lg">HWID</span><span class="text-[9px] text-outline uppercase tracking-wider">VERIFIED</span></div>
               </div>
             </div>
           </div>
@@ -158,58 +230,52 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
                 <div class="jk-slider-ticks"><span class="text-[9px] text-outline">1</span><span class="text-[9px] text-outline">500</span></div>
               </div>
             </div>
-          <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5">
-            <div>
-              <span class="text-on-surface text-sm font-medium block">No Recoil</span>
-              <span class="text-on-surface-variant text-[10px]">Removes weapon recoil</span>
+            <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5">
+              <div><span class="text-on-surface text-sm font-medium block">No Recoil</span><span class="text-on-surface-variant text-[10px]">Removes weapon recoil</span></div>
+              <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'norecoil_on' : 'norecoil_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
             </div>
-            <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'norecoil_on' : 'norecoil_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
-          </div>
-
-          <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5">
-            <div>
-              <span class="text-on-surface text-sm font-medium block">Weapon Attribute</span>
-              <span class="text-on-surface-variant text-[10px]">Increases fire rate</span>
+            <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5">
+              <div><span class="text-on-surface text-sm font-medium block">Weapon Attribute</span><span class="text-on-surface-variant text-[10px]">Increases fire rate</span></div>
+              <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'weaponatribute_on' : 'weaponatribute_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
             </div>
-            <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'weaponatribute_on' : 'weaponatribute_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
-          </div>
-
-          <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5">
-            <div>
-              <span class="text-on-surface text-sm font-medium block">Show FOV</span>
-              <span class="text-on-surface-variant text-[10px]">Displays field of view</span>
+            <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5">
+              <div><span class="text-on-surface text-sm font-medium block">Show FOV</span><span class="text-on-surface-variant text-[10px]">Displays field of view</span></div>
+              <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'showfov_on' : 'showfov_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
             </div>
-            <label class="switch"><input type="checkbox" unchecked onchange="enviarComando(this.checked ? 'showfov_on' : 'showfov_off')"><span class="track"></span><span class="thumb"><svg viewBox="0 0 10 8" fill="none"><polyline points="1,4 4,7 9,1" stroke="#483d8b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
           </div>
         </div>
       </div>
 
       <!-- ===== SILENT ===== -->
       <div class="tab-content" id="tab-silent">
+        <div class="sub-nav-pills">
+          <div class="sub-nav-pill active" data-sub="options">OPTIONS</div>
+          <div class="sub-nav-pill" data-sub="settings">SETTINGS</div>
+        </div>
         <div class="sub-tab active" id="sub-silent-options">
-          <div class="mb-6">
-            <h2 class="text-on-surface text-2xl font-semibold tracking-[-0.04em]">SILENT <span class="text-primary-container">MAGIC</span></h2>
+          <div class="mb-5">
+            <h2 class="text-on-surface text-xl md:text-2xl font-semibold tracking-[-0.04em]">SILENT <span class="text-primary-container">MAGIC</span></h2>
             <p class="text-on-surface-variant text-xs mt-1 opacity-70">Perfect manipulation of projectiles for unmissable shots.</p>
           </div>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="p-5 rounded-xl bg-surface-container-high flex flex-col justify-between h-[120px]">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+            <div class="p-4 md:p-5 rounded-xl bg-surface-container-high flex flex-col justify-between" style="min-height:100px;">
               <div class="flex justify-between items-start"><div><h3 class="text-on-surface font-semibold text-sm">Silent Magic</h3><p class="text-[10px] text-on-surface-variant opacity-60 mt-1 uppercase tracking-wider">Primary Core</p></div><label class="switch switch-sm"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label></div>
-              <div class="flex items-center gap-2"><span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[9px] text-on-surface-variant font-medium">CAPS</span><span class="text-[9px] text-outline italic">Bound Key</span></div>
+              <div class="flex items-center gap-2 mt-3"><span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-[9px] text-on-surface-variant font-medium">CAPS</span><span class="text-[9px] text-outline italic">Bound Key</span></div>
             </div>
-            <div class="p-5 rounded-xl bg-surface-container-high flex flex-col justify-between h-[120px]">
+            <div class="p-4 md:p-5 rounded-xl bg-surface-container-high flex flex-col justify-between" style="min-height:100px;">
               <div class="flex justify-between items-start"><div><h3 class="text-on-surface font-semibold text-sm">Ignore Bots</h3><p class="text-[10px] text-on-surface-variant opacity-60 mt-1 uppercase tracking-wider">Logic Filter</p></div><label class="switch switch-sm"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label></div>
-              <div class="flex items-center gap-1.5"><div class="w-1.5 h-1.5 rounded-full bg-primary"></div><span class="text-[10px] text-on-primary-container font-medium">Active</span></div>
+              <div class="flex items-center gap-1.5 mt-3"><div class="w-1.5 h-1.5 rounded-full bg-primary"></div><span class="text-[10px] text-on-primary-container font-medium">Active</span></div>
             </div>
-            <div class="p-5 rounded-xl bg-surface-container-low flex flex-col justify-between h-[120px] border border-white/[0.02]">
+            <div class="p-4 md:p-5 rounded-xl bg-surface-container-low flex flex-col justify-between border border-white/[0.02]" style="min-height:100px;">
               <div class="flex justify-between items-start"><div><h3 class="text-on-surface/50 font-semibold text-sm">Ignore Knocked</h3><p class="text-[10px] text-on-surface-variant opacity-40 mt-1 uppercase tracking-wider">Logic Filter</p></div><label class="switch switch-sm"><input type="checkbox"><span class="track"></span><span class="thumb"></span></label></div>
-              <p class="text-[10px] text-on-surface-variant opacity-40 italic">Target downed players</p>
+              <p class="text-[10px] text-on-surface-variant opacity-40 italic mt-3">Target downed players</p>
             </div>
-            <div class="p-5 rounded-xl bg-surface-container-high flex flex-col justify-between h-[120px]">
+            <div class="p-4 md:p-5 rounded-xl bg-surface-container-high flex flex-col justify-between" style="min-height:100px;">
               <div class="flex justify-between items-start"><div><h3 class="text-on-surface font-semibold text-sm">Show FOV</h3><p class="text-[10px] text-on-surface-variant opacity-60 mt-1 uppercase tracking-wider">Overlay</p></div><label class="switch switch-sm"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label></div>
-              <div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden"><div class="h-full bg-primary-container w-[40%]"></div></div>
+              <div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden mt-3"><div class="h-full bg-primary-container w-[40%]"></div></div>
             </div>
           </div>
-          <div class="mt-6 pt-4 border-t border-white/[0.03] flex items-center justify-between">
+          <div class="mt-5 pt-4 border-t border-white/[0.03] flex items-center justify-between">
             <div class="flex gap-4">
               <div class="flex flex-col"><span class="text-[9px] uppercase tracking-widest text-outline">Ping</span><span class="text-xs font-bold text-tertiary">24 MS</span></div>
               <div class="flex flex-col"><span class="text-[9px] uppercase tracking-widest text-outline">FPS</span><span class="text-xs font-bold text-on-surface">144.2</span></div>
@@ -237,8 +303,12 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
 
       <!-- ===== VISUALS ===== -->
       <div class="tab-content" id="tab-visuals">
+        <div class="sub-nav-pills">
+          <div class="sub-nav-pill" data-sub="options">OPTIONS</div>
+          <div class="sub-nav-pill active" data-sub="settings">SETTINGS</div>
+        </div>
         <div class="sub-tab" id="sub-visuals-options">
-          <div class="space-y-4">
+          <div class="space-y-3 md:space-y-4">
             <h2 class="text-[10px] uppercase tracking-[0.2em] text-outline font-bold mb-2 opacity-70">Visual Options</h2>
             <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between border border-white/5">
               <span class="text-on-surface text-sm font-medium">Show Skeletons</span>
@@ -250,27 +320,21 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
             </div>
           </div>
         </div>
-
-        <!-- VISUALS SETTINGS com color picker -->
         <div class="sub-tab active" id="sub-visuals-settings">
-          <div class="space-y-5">
-            <!-- Render Distance slider -->
-            <div class="bg-surface-container-low p-5 rounded-xl border border-white/[0.02]">
+          <div class="space-y-4 md:space-y-5">
+            <div class="bg-surface-container-low p-4 md:p-5 rounded-xl border border-white/[0.02]">
               <div class="jk-slider-wrap">
                 <div class="jk-slider-row"><div><span class="text-on-surface font-semibold text-sm block">Render Distance</span><span class="text-on-surface-variant text-[11px]">Maximum entity visibility range</span></div><span class="text-primary-container font-mono text-sm font-bold" id="render-label">350m</span></div>
                 <input type="range" class="jk-slider" min="0" max="1000" value="350" id="render-slider">
                 <div class="jk-slider-ticks"><span class="text-[9px] text-outline">0m</span><span class="text-[9px] text-outline">1000m</span></div>
               </div>
             </div>
-
-            <!-- Colors section -->
             <div>
               <div class="flex items-center gap-2 mb-3">
                 <div class="h-[1px] w-4 bg-primary-container"></div>
                 <h2 class="text-xs font-bold tracking-[0.2em] text-outline uppercase">Colors &amp; Visual Identity</h2>
               </div>
-              <div class="grid grid-cols-2 gap-3" id="color-rows">
-
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="color-rows">
                 <div class="color-row bg-surface-container-high/50 p-4 rounded-lg flex items-center justify-between relative" data-key="name" data-color="#483D8B">
                   <div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary text-sm">badge</span><span class="text-on-surface-variant text-xs font-medium">Name Color</span></div>
                   <div class="flex items-center gap-2 color-trigger cursor-pointer group">
@@ -279,7 +343,6 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
                   </div>
                   <div class="color-popup"></div>
                 </div>
-
                 <div class="color-row bg-surface-container-high/50 p-4 rounded-lg flex items-center justify-between relative" data-key="skeleton" data-color="#E4E1E6">
                   <div class="flex items-center gap-3"><span class="material-symbols-outlined text-on-surface text-sm">accessibility_new</span><span class="text-on-surface-variant text-xs font-medium">Skeleton Color</span></div>
                   <div class="flex items-center gap-2 color-trigger cursor-pointer group">
@@ -288,7 +351,6 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
                   </div>
                   <div class="color-popup"></div>
                 </div>
-
                 <div class="color-row bg-surface-container-high/50 p-4 rounded-lg flex items-center justify-between relative" data-key="box" data-color="#FFB4AB">
                   <div class="flex items-center gap-3"><span class="material-symbols-outlined text-error text-sm">check_box_outline_blank</span><span class="text-on-surface-variant text-xs font-medium">Box Color</span></div>
                   <div class="flex items-center gap-2 color-trigger cursor-pointer group">
@@ -297,7 +359,6 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
                   </div>
                   <div class="color-popup"></div>
                 </div>
-
                 <div class="color-row bg-surface-container-high/50 p-4 rounded-lg flex items-center justify-between relative" data-key="lines" data-color="#928F9C">
                   <div class="flex items-center gap-3"><span class="material-symbols-outlined text-outline text-sm">linear_scale</span><span class="text-on-surface-variant text-xs font-medium">Lines Color</span></div>
                   <div class="flex items-center gap-2 color-trigger cursor-pointer group">
@@ -306,7 +367,6 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
                   </div>
                   <div class="color-popup"></div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -315,24 +375,28 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
 
       <!-- ===== CONFIGS ===== -->
       <div class="tab-content" id="tab-configs">
+        <div class="sub-nav-pills">
+          <div class="sub-nav-pill active" data-sub="options">OPTIONS</div>
+          <div class="sub-nav-pill" data-sub="settings">SETTINGS</div>
+        </div>
         <div class="sub-tab active" id="sub-configs-options">
-          <div class="grid grid-cols-12 gap-6">
-            <div class="col-span-7 space-y-4">
-              <section class="bg-surface-container-high rounded-lg p-5 border border-outline-variant/5">
-                <h3 class="font-['Inter'] text-[10px] font-bold uppercase tracking-widest text-outline mb-4">ACCOUNT STATUS</h3>
-                <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-12 gap-4 md:gap-6">
+            <div class="col-span-12 md:col-span-7 space-y-3 md:space-y-4">
+              <section class="bg-surface-container-high rounded-lg p-4 md:p-5 border border-outline-variant/5">
+                <h3 class="font-['Inter'] text-[10px] font-bold uppercase tracking-widest text-outline mb-3 md:mb-4">ACCOUNT STATUS</h3>
+                <div class="grid grid-cols-2 gap-3 md:gap-4">
                   <div class="bg-surface-container-lowest/50 p-3 rounded border border-outline-variant/5"><p class="text-[9px] uppercase tracking-tighter text-outline-variant font-bold mb-1">User Identity</p><p class="text-xs font-semibold text-on-surface flex items-center gap-2">nash <span class="text-[9px] px-1.5 py-0.5 bg-primary/10 text-primary rounded">85HZ</span></p></div>
                   <div class="bg-surface-container-lowest/50 p-3 rounded border border-outline-variant/5"><p class="text-[9px] uppercase tracking-tighter text-outline-variant font-bold mb-1">Subscription</p><p class="text-xs font-semibold text-tertiary">Lifetime</p></div>
                   <div class="col-span-2 bg-surface-container-lowest/50 p-3 rounded border border-outline-variant/5 flex justify-between items-center"><div><p class="text-[9px] uppercase tracking-tighter text-outline-variant font-bold mb-1">Build Version</p><p class="text-xs font-mono text-on-surface">2.0.0 Stable</p></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-primary"></span><span class="text-[10px] font-bold text-primary">SECURE</span></div></div>
                 </div>
               </section>
-              <section class="bg-surface-container-high rounded-lg p-5 border border-outline-variant/5">
+              <section class="bg-surface-container-high rounded-lg p-4 md:p-5 border border-outline-variant/5">
                 <div class="flex items-center justify-between"><div><h3 class="font-['Inter'] text-[10px] font-bold uppercase tracking-widest text-on-surface">KEYBIND MENU</h3><p class="text-[10px] text-on-surface-variant/60 font-medium">Toggle software visibility in-game</p></div><div class="px-3 py-1.5 bg-surface-container-highest rounded border border-outline-variant/20 cursor-pointer"><span class="text-[10px] font-bold text-primary">INSERT</span></div></div>
               </section>
             </div>
-            <div class="col-span-5">
-              <section class="bg-surface-container-high rounded-lg p-5 border border-outline-variant/5 flex flex-col" style="height:220px">
-                <h3 class="font-['Inter'] text-[10px] font-bold uppercase tracking-widest text-outline mb-4">SAVED PROFILES</h3>
+            <div class="col-span-12 md:col-span-5">
+              <section class="bg-surface-container-high rounded-lg p-4 md:p-5 border border-outline-variant/5 flex flex-col" style="min-height:200px;max-height:240px;">
+                <h3 class="font-['Inter'] text-[10px] font-bold uppercase tracking-widest text-outline mb-3 md:mb-4">SAVED PROFILES</h3>
                 <div class="flex-1 space-y-2 overflow-y-auto custom-scrollbar pr-1">
                   <div class="flex items-center justify-between p-3 bg-surface-container-lowest border-l-2 border-primary rounded-r"><div><span class="text-[11px] font-bold text-on-surface block">LEGIT_DEFAULT</span><span class="text-[9px] text-outline-variant">Last updated 2h ago</span></div><span class="material-symbols-outlined text-sm text-outline-variant cursor-pointer">more_vert</span></div>
                   <div class="flex items-center justify-between p-3 bg-surface-container-lowest/40 border-l-2 border-transparent hover:border-outline-variant rounded-r cursor-pointer"><div><span class="text-[11px] font-bold text-on-surface-variant block">RAGE_MAIN</span><span class="text-[9px] text-outline-variant">Created 3 days ago</span></div></div>
@@ -341,8 +405,8 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
                 <button class="mt-3 w-full py-2 rounded bg-surface-container-highest text-[10px] font-bold uppercase tracking-widest text-on-surface border border-outline-variant/10 hover:bg-surface-bright transition-all">CREATE NEW</button>
               </section>
             </div>
-            <div class="col-span-12 pt-4 border-t border-outline-variant/5 flex justify-between items-center">
-              <div class="flex gap-4"><div class="flex items-center gap-1.5"><span class="text-[9px] font-bold text-outline uppercase tracking-wider">Bypass:</span><span class="text-[9px] font-bold text-primary uppercase">EAC-V7</span></div><div class="flex items-center gap-1.5"><span class="text-[9px] font-bold text-outline uppercase tracking-wider">HWID:</span><span class="text-[9px] font-bold text-white uppercase">MATCHED</span></div></div>
+            <div class="col-span-12 pt-3 md:pt-4 border-t border-outline-variant/5 flex justify-between items-center">
+              <div class="flex gap-3 md:gap-4"><div class="flex items-center gap-1.5"><span class="text-[9px] font-bold text-outline uppercase tracking-wider">Bypass:</span><span class="text-[9px] font-bold text-primary uppercase">EAC-V7</span></div><div class="flex items-center gap-1.5"><span class="text-[9px] font-bold text-outline uppercase tracking-wider">HWID:</span><span class="text-[9px] font-bold text-white uppercase">MATCHED</span></div></div>
               <div class="text-[9px] text-outline-variant font-medium">Session: 01:24:55</div>
             </div>
           </div>
@@ -360,13 +424,29 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
   </main>
 </div>
 
+<!-- BOTTOM NAV (mobile only) -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-item active" data-tab="aimbot">
+    <span class="material-symbols-outlined">target</span>
+    <span class="nav-label">Aimbot</span>
+  </div>
+  <div class="bottom-nav-item" data-tab="silent">
+    <span class="material-symbols-outlined">radar</span>
+    <span class="nav-label">Silent</span>
+  </div>
+  <div class="bottom-nav-item" data-tab="visuals">
+    <span class="material-symbols-outlined">visibility</span>
+    <span class="nav-label">Visuals</span>
+  </div>
+  <div class="bottom-nav-item" data-tab="configs">
+    <span class="material-symbols-outlined">settings_input_component</span>
+    <span class="nav-label">Configs</span>
+  </div>
+</nav>
+
 <script>
-
-
 const PRESETS = ['#c8bfff','#b9aeff','#483d8b','#f5bc74','#ffb4ab','#e4e1e6','#928f9c','#ff6b6b','#6bffb8','#6bb5ff','#ff6bf5','#fff176','#ff9800','#ffffff','#000000'];
 
-function hexToRgb(hex){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return{r,g,b};}
-function rgbToHex(r,g,b){return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase();}
 function buildPopup(row){
   const popup = row.querySelector('.color-popup');
   const currentColor = row.dataset.color;
@@ -414,30 +494,30 @@ document.querySelectorAll('.color-row').forEach(row=>{
   const trigger = row.querySelector('.color-trigger');
   const popup = row.querySelector('.color-popup');
 
-  // position popup dynamically
   trigger.addEventListener('click', e=>{
     e.stopPropagation();
     const wasOpen = popup.classList.contains('open');
     closeAll();
     if(!wasOpen){
       popup.classList.add('open');
-      // position: above or below depending on space
-      const rowRect = row.getBoundingClientRect();
+      // Position popup relative to viewport
+      const trigRect = trigger.getBoundingClientRect();
       const winH = window.innerHeight;
-      const spaceBelow = winH - rowRect.bottom;
-      if(spaceBelow < 260){
-        popup.style.bottom = '100%';
-        popup.style.top = 'auto';
-        popup.style.marginBottom = '6px';
-        popup.style.marginTop = '0';
-      } else {
-        popup.style.top = '100%';
-        popup.style.bottom = 'auto';
-        popup.style.marginTop = '6px';
-        popup.style.marginBottom = '0';
-      }
-      popup.style.right = '0';
-      popup.style.left = 'auto';
+      const winW = window.innerWidth;
+      const popW = 220;
+      
+      let top = trigRect.bottom + 6;
+      let left = trigRect.right - popW;
+      
+      if(top + 260 > winH) top = trigRect.top - 266;
+      if(left < 8) left = 8;
+      if(left + popW > winW - 8) left = winW - popW - 8;
+      
+      popup.style.top = top + 'px';
+      popup.style.left = left + 'px';
+      popup.style.right = 'auto';
+      popup.style.bottom = 'auto';
+      popup.style.position = 'fixed';
     }
   });
 });
@@ -454,6 +534,8 @@ function setTab(tab){
   currentTab = tab;
   closeAll();
   tabs.forEach(t=> document.getElementById('tab-'+t).classList.toggle('active', t===tab));
+  
+  // Desktop sidebar
   document.querySelectorAll('.nav-item').forEach(el=>{
     const a = el.dataset.tab === tab;
     el.classList.toggle('text-[#b9aeff]',a);
@@ -465,7 +547,14 @@ function setTab(tab){
     el.classList.toggle('text-[#c9c4d2]',!a);
     el.classList.toggle('opacity-60',!a);
   });
+  
+  // Mobile bottom nav
+  document.querySelectorAll('.bottom-nav-item').forEach(el=>{
+    el.classList.toggle('active', el.dataset.tab === tab);
+  });
+  
   document.getElementById('top-title').textContent = tabTitles[tab];
+  document.getElementById('top-title-mobile').textContent = tabTitles[tab];
   setSub(tabDefaultSub[tab]);
 }
 
@@ -474,6 +563,7 @@ function setSub(sub){
     const el = document.getElementById('sub-'+currentTab+'-'+s);
     if(el) el.classList.toggle('active', s===sub);
   });
+  // Desktop sub nav
   document.querySelectorAll('.sub-nav-btn').forEach(el=>{
     const a = el.dataset.sub === sub;
     el.classList.toggle('text-[#b9aeff]',a);
@@ -482,10 +572,21 @@ function setSub(sub){
     el.classList.toggle('pb-1',a);
     el.classList.toggle('opacity-50',!a);
   });
+  // Mobile pills
+  document.querySelectorAll('#tab-'+currentTab+' .sub-nav-pill').forEach(el=>{
+    el.classList.toggle('active', el.dataset.sub === sub);
+  });
 }
 
 document.querySelectorAll('.nav-item').forEach(el=> el.addEventListener('click',()=> setTab(el.dataset.tab)));
 document.querySelectorAll('.sub-nav-btn').forEach(el=> el.addEventListener('click',()=> setSub(el.dataset.sub)));
+document.querySelectorAll('.bottom-nav-item').forEach(el=> el.addEventListener('click',()=> setTab(el.dataset.tab)));
+
+// Mobile pills - delegate
+document.addEventListener('click', e=>{
+  const pill = e.target.closest('.sub-nav-pill');
+  if(pill) setSub(pill.dataset.sub);
+});
 
 // Sliders
 function bindSlider(id, labelId, suffix){
@@ -502,7 +603,6 @@ function updateSliderFill(slider){
 }
 bindSlider('fov-slider','fov-label','°');
 bindSlider('smooth-slider','smooth-label','');
-bindSlider('speed-slider','speed-label','');
 bindSlider('angle-slider','angle-label','°');
 bindSlider('render-slider','render-label','m');
 
