@@ -154,7 +154,7 @@ body{font-family:'Inter',sans-serif;background-color:#000;display:flex;align-ite
             <div class="bg-surface-container-low p-4 rounded-xl border border-white/5">
               <div class="jk-slider-wrap">
                 <div class="jk-slider-row"><span class="text-on-surface text-sm font-medium">Smoothness</span><span class="text-primary text-[11px] font-bold" id="smooth-label">5</span></div>
-                <input type="range" class="jk-slider" min="1" max="500" value="5" id="smooth-slider" oninput="atualizarTextoFov(this.value)" onchange="enviarFov(this.value, 'set_smooth')">
+                <input type="range" class="jk-slider" min="1" max="500" value="5" id="smooth-slider" onchange="enviarFov(this.value, 'set_smooth')">
                 <div class="jk-slider-ticks"><span class="text-[9px] text-outline">1</span><span class="text-[9px] text-outline">500</span></div>
               </div>
             </div>
